@@ -34,12 +34,12 @@ docker-compose exec php ash
 
 These docker images are configured in `docker-compose.yml` file. You can comment or uncomment some services according to your project.
 
-* gbelot2003/docker-laravel*php*1:latest (this docker image extends `php:7.4-fpm-alpine` to add some PHP extensions) ;
-* gbelot2003/docker-laravel*site*1:latest (this docker image extends `nginx:latest` to add Laravel vhost) ;
-* **mysql:5.7.29**
+* `gbelot2003/docker-laravel*php*1:latest (this docker image extends `php:7.4-fpm-alpine` to add some PHP extensions)`;
+* `gbelot2003/docker-laravel*site*1:latest (this docker image extends `nginx:latest` to add Laravel vhost)`;
+* `mysql:5.7.29`;
 * `postgres:9.6-alpine` ;
 * `redis:latest` ;
-* **Node:13.7**
+* `Node:13.7`;
 
 ## Contributing
 
