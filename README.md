@@ -1,4 +1,4 @@
-# ***Docker for Laravel 2020 ***
+# ***Docker for Laravel 2020***
 
 Inspired by :
 
