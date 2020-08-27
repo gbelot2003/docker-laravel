@@ -1,37 +1,50 @@
-## Welcome to GitHub Pages
+# ***Docker for Laravel 2020***
 
-You can use the [editor on GitHub](https://github.com/gbelot2003/docker-laravel/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Inspired by :
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+* <https://github.com/aschmelyun/docker-compose-laravel>
+* <https://github.com/jguyomard/docker-laravel>
 
-### Markdown
+## Usage
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Install [docker](https://docs.docker.com/engine/installation/) and [docker-compose](https://docs.docker.com/compose/install/) ;
 
-```markdown
-Syntax highlighted code block
+1. Copy `docker-compose.yml` file to your project root path, and edit it according to your needs ;
+2. From your project directory, start up your application by running:
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```
+docker-compose up --build 
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+4. If you want, you can run composer or artisan through docker. For instance:
 
-### Jekyll Themes
+```
+docker-compose exec php composer install
+docker-compose exec php php artisan migrate
+docker-compose exec php $yourCommandHere
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/gbelot2003/docker-laravel/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+5.  In Addition, you can work inside the container:
 
-### Support or Contact
+```
+docker-compose exec php ash
+```
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+## Docker Images
+
+These docker images are configured in `docker-compose.yml` file. You can comment or uncomment some services according to your project.
+
+* `gbelot2003/docker-laravel*php*1:latest (this docker image extends `php:7.4-fpm-alpine` to add some PHP extensions)`;
+* `gbelot2003/docker-laravel*site*1:latest (this docker image extends `nginx:latest` to add Laravel vhost)`;
+* `mysql:5.7.29`;
+* `postgres:9.6-alpine` ;
+* `redis:latest` ;
+* `Node:13.7`;
+
+## Contributing
+
+Contributions are welcome! Leave an issue on Github, or create a Pull Request.
+
+## Licence
+
+This work is under [MIT](https://github.com/jguyomard/docker-laravel/blob/master/LICENCE) licence.
