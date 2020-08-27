@@ -1,6 +1,6 @@
 # ***Docker for Laravel***
 
-Inspirado en los proyectos de :
+Inspired by :
 
 * <https://github.com/aschmelyun/docker-compose-laravel>
 * <https://github.com/jguyomard/docker-laravel>
