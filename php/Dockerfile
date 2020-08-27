@@ -1,93 +1,42 @@
-FROM php:7.4-fpm-alpine
+FROM php:7.4-fpm
 
-    #Install imagemagick:
-    ENV MAGICK_HOME=/usr
+RUN apt-get update && apt-get install -y \
+git \
+tree \
+vim \
+wget \
+libmagickwand-6.q16-dev \
+libfreetype6-dev \
+libjpeg62-turbo-dev \
+libwebp-dev \
+libpng-dev \
+libzip-dev \
+zip \
+&& docker-php-ext-install zip \
+&& ln -s /usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16/MagickWand-config /usr/bin \
+&& pecl install imagick \
+&& echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini \
+&& rm -rf /var/lib/apt/lists/* 
 
-    RUN apk add --no-cache --virtual .build-deps \
-        $PHPIZE_DEPS \
-        curl-dev \
-        imagemagick-dev \
-        libtool \
-        libxml2-dev \
-        postgresql-dev \
-        sqlite-dev 
+#RUN printf "\n" | pecl install imagick-beta
+#RUN docker-php-ext-enable imagick
 
-    RUN  apk --no-cache update \
-        && apk --no-cache upgrade \
-        && apk add --update \
-        curl \
-        curl-dev \
-        git \
-        mysql-client \
-        postgresql-libs \
-        coreutils \
-        freetype-dev \
-        libwebp-dev \
-        libjpeg \
-        libpng-dev \
-        libjpeg-turbo \
-        libzip-dev \
-        jpeg-dev \
-        icu \
-        icu-dev \
-        imap-dev \
-        libxslt-dev libxml2-dev \
-        postgresql-dev \
-        libgcrypt-dev \
-        oniguruma-dev \
-        libpng \
-        libpng-dev \
-        zlib-dev \
-        libxpm-dev \
-        libxml2-dev \
-        libzip-dev \
-        gd \
-        autoconf g++ imagemagick-dev imagemagick libtool make
-
-    RUN docker-php-ext-configure gd \
-        --with-freetype \
-        --with-jpeg
-    
-    RUN docker-php-ext-install \
-        mbstring \
-        mysqli \
-        opcache \
-        soap \
-        pdo \
-        pdo_mysql
-    
-    RUN pecl install imagick
-    
-    RUN docker-php-ext-enable imagick
-    
-    RUN apk del autoconf g++ libtool make
-
-    RUN docker-php-ext-install -j "$(nproc)" \
-        gd \
-        soap \
-        imap \
-        mbstring \
-        curl \ 
-        sockets \
-        opcache \
-        bcmath \
-        pdo_pgsql \
-        xsl \
-        exif \
-        iconv \
-        mysqli \
-        pdo \
-        pdo_mysql \
-        pdo_pgsql \
-        pdo_sqlite \
-        pcntl \
-        tokenizer \
-        xml \
-        intl \
-        zip
+# configure, install and enable all php packages
+RUN set -eux; \
+	docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp; \
+	docker-php-ext-configure intl; \
+	docker-php-ext-configure mysqli --with-mysqli=mysqlnd; \
+	docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd; \
+	docker-php-ext-configure zip; \
+	docker-php-ext-install -j "$(nproc)" \
+		gd \
+		intl \
+		mysqli \
+		opcache \
+		pdo_mysql \
+		zip
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-RUN apk del -f .build-deps
 
 WORKDIR /var/www/html

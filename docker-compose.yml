@@ -18,7 +18,7 @@ services:
       - laravel
 
   php:
-    image: gbelot2003/docker-laravel_php_1:latest
+    image: gbelot2003/docker-laravel_php_1:v2
     volumes:
       - ./:/var/www/html
     ports:
@@ -47,15 +47,16 @@ services:
   #    volumes:
   #      - pgsqldata:/var/lib/postgresql/data
   #    environment:
-  #      - "POSTGRES_DB=homestead"
-  #      - "POSTGRES_USER=homestead"
-  #      - "POSTGRES_PASSWORD=homestead"
+  #      - "POSTGRES_DB=${DB_DATABASE}"
+  #      - "POSTGRES_USER=${DB_USER}"
+  #      - "POSTGRES_PASSWORD=${DB_PASSWORD}"
   #    ports:
   #        - "5432:5432"
 
   redis:
     image: redis:latest
     command: redis-server --appendonly yes
+    restart: unless-stopped
     networks:
       - laravel
     #ports:
@@ -67,3 +68,18 @@ services:
       - ./:/var/www/html
     working_dir: /var/www/html
     entrypoint: ['npm']
+
+  app:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    environment:
+      - PMA_ARBITRARY=1
+    links:
+      - mysql
+    ports:
+      - 8085:80
+    volumes:
+      - /sessions
+    networks:
+      - laravel
