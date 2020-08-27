@@ -3,7 +3,7 @@ pipeline{
     stages {
         stage("Git Pull"){
             steps{
-                git branch: 'dev',  
+                git branch: 'master',  
                 url: 'https://github.com/gbelot2003/docker-laravel.git'
             }
         }
@@ -21,7 +21,7 @@ pipeline{
         }
         stage("Creando Entorno Docker"){
             steps{
-                sh "docker-compose build"
+                sh "docker-compose build --no-cache"
             }
         }
     }
