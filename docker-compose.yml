@@ -21,6 +21,7 @@ services:
     image: gbelot2003/docker-laravel_php_1:v3
     volumes:
       - ./:/var/www/html
+      - ./public/storage:/var/www/html/public/storage
     ports:
       - '9000:9000'
     networks:
